@@ -1,11 +1,9 @@
-using System.Diagnostics;
-
 namespace _2Laba
 {
     public partial class Form1 : Form
     {
         private Dictionary<string, string> fileNames = new Dictionary<string, string>();
-        public List<MenuStructure> menus = new List<MenuStructure>();
+        private List<MenuStructure> menus = new List<MenuStructure>();
         private MenuStructure menu = new MenuStructure();
         private MenuStructure menuHead = new MenuStructure();
         private List<MenuStructure> previos = new List<MenuStructure>();
@@ -15,7 +13,7 @@ namespace _2Laba
         private ToolStripMenuItem toolHead;
         private List<ToolStripMenuItem> toolsHead = new List<ToolStripMenuItem>();
         private List<ToolStripMenuItem> result = new List<ToolStripMenuItem>();
-        private Dictionary<ToolStripMenuItem, int> l = new Dictionary<ToolStripMenuItem, int>();
+        private Dictionary<ToolStripMenuItem, int> previosToolsWithLevel = new Dictionary<ToolStripMenuItem, int>();
         public Form1(string path)
         {
             InitializeComponent();
@@ -101,7 +99,7 @@ namespace _2Laba
                     if(toolHead == null)
                     {
                         toolHead = tool;
-                        l.Add(tool, level);
+                        previosToolsWithLevel.Add(tool, level);
                         level++;
                         Show(menus[i].SubMenu);
                         level--;
@@ -111,8 +109,8 @@ namespace _2Laba
                     }
                     else
                     {
-                        l.Add(tool, level);
-                        this.tool = l.LastOrDefault(x => x.Value == level - 1).Key;
+                        previosToolsWithLevel.Add(tool, level);
+                        this.tool = previosToolsWithLevel.LastOrDefault(x => x.Value == level - 1).Key;
                         this.tool.DropDownItems.Add(tool);
 
                         if (toolHead != this.tool)
@@ -138,7 +136,7 @@ namespace _2Laba
                     }
                     else
                     {
-                        var t = l.LastOrDefault(x => x.Value == level - 1);
+                        var t = previosToolsWithLevel.LastOrDefault(x => x.Value == level - 1);
                         this.tool = t.Key;
                         this.tool.DropDownItems.Add(tool);
                     }
